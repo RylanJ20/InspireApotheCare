@@ -150,6 +150,11 @@ body {
 .nav__cta:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; }
 
 @media (max-width: 767px) {
+  .nav__inner { gap: var(--sp-2); }
+  .nav__toggle { display: block; order: -1; }
+  .nav__logo { flex: 1; min-width: 0; }
+  .nav__logo img { height: 36px; }
+  .nav__cta { padding: var(--sp-2) var(--sp-3); font-size: 13px; flex-shrink: 0; }
   .nav__links {
     display: none; position: absolute; top: 100%; left: 0; right: 0;
     flex-direction: column; background: var(--white);
@@ -159,7 +164,6 @@ body {
   }
   .nav__links.open { display: flex; }
   .nav__links a { padding: var(--sp-3) 0; }
-  .nav__toggle { display: block; }
 }
 
 /* ─── Hero ─────────────────────────────────────────────── */
