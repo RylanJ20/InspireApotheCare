@@ -1,0 +1,14 @@
+# Claude Code
+.claude/
+CLAUDE.md
+
+# Editor
+.vscode/
+
+# Planning docs (not needed on live site)
+PLAN.md
+FUTUREPLANS.md
+
+# OS files
+Thumbs.db
+.DS_Store
