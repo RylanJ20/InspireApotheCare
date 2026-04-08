@@ -46,26 +46,44 @@
   }
 
   // ─── Active nav link on scroll ──────────────────────────
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav__links a[href^="#"]');
+  // Only track sections that have a matching nav link
+  var navLinks = document.querySelectorAll('.nav__links a[href^="#"]');
+  var trackedSections = [];
+  navLinks.forEach(function (link) {
+    var id = link.getAttribute('href').slice(1);
+    var section = document.getElementById(id);
+    if (section) trackedSections.push({ id: id, el: section });
+  });
 
   function highlightActiveLink() {
-    var scrollY = window.scrollY + 120;
-    sections.forEach(function (section) {
-      var top = section.offsetTop;
-      var height = section.offsetHeight;
-      var id = section.getAttribute('id');
-      if (scrollY >= top && scrollY < top + height) {
-        navLinks.forEach(function (link) {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === '#' + id) {
-            link.classList.add('active');
-          }
-        });
+    var scrollY = window.scrollY + 150;
+    var docHeight = document.documentElement.scrollHeight;
+    var winHeight = window.innerHeight;
+    var activeId = trackedSections.length ? trackedSections[0].id : null;
+
+    // If scrolled to bottom, highlight the last section
+    if (window.scrollY + winHeight >= docHeight - 10) {
+      activeId = trackedSections[trackedSections.length - 1].id;
+    } else {
+      // Find the last tracked section whose top we've scrolled past
+      for (var i = trackedSections.length - 1; i >= 0; i--) {
+        if (scrollY >= trackedSections[i].el.offsetTop) {
+          activeId = trackedSections[i].id;
+          break;
+        }
+      }
+    }
+
+    navLinks.forEach(function (link) {
+      if (link.getAttribute('href') === '#' + activeId) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
       }
     });
   }
   window.addEventListener('scroll', highlightActiveLink, { passive: true });
+  highlightActiveLink();
 
   // ─── Scroll reveal (IntersectionObserver) ───────────────
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
