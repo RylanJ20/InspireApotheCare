@@ -22,34 +22,26 @@
     toggle.addEventListener('click', function () {
       const isOpen = links.classList.toggle('open');
       toggle.setAttribute('aria-expanded', isOpen);
-      // Swap hamburger / X icon
-      const icon = toggle.querySelector('svg');
-      if (isOpen) {
-        icon.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
-      } else {
-        icon.innerHTML = '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
-      }
+      toggle.classList.toggle('nav__toggle--open', isOpen);
     });
+
+    function closeMenu() {
+      links.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.classList.remove('nav__toggle--open');
+    }
 
     // Close menu on Escape key
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && links.classList.contains('open')) {
-        links.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-        var icon = toggle.querySelector('svg');
-        icon.innerHTML = '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
+        closeMenu();
         toggle.focus();
       }
     });
 
     // Close menu when a link is clicked
     links.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        links.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-        var icon = toggle.querySelector('svg');
-        icon.innerHTML = '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
-      });
+      link.addEventListener('click', closeMenu);
     });
   }
 
@@ -171,6 +163,14 @@
         var top = target.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top: top, behavior: 'smooth' });
       }
+    });
+  });
+
+  // ─── Obfuscated email links ──────────────────────────────
+  document.querySelectorAll('a[data-m][data-d]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.location.href = 'mailto:' + el.getAttribute('data-m') + '@' + el.getAttribute('data-d');
     });
   });
 

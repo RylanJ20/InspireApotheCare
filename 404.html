@@ -5,9 +5,10 @@
   <script>
     // GitHub Pages clean URL support
     // Redirects /locations -> /locations.html, etc.
-    var path = window.location.pathname;
-    if (path !== '/' && !path.endsWith('.html') && !path.includes('.')) {
-      window.location.replace(path + '.html');
+    var validPages = ['index', 'locations', 'careers', 'privacy', 'accessibility'];
+    var path = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
+    if (validPages.indexOf(path) !== -1) {
+      window.location.replace('/' + path + '.html');
     }
   </script>
   <title>Page Not Found - Inspire ApotheCare Pharmacy</title>
